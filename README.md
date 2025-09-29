@@ -6,6 +6,48 @@
 
 更多内容可以看项目内`/old/提示词.md`文件，里面涵盖了从需求背景->设计->开发的完整思路。
 
+## 以图生图参考图预览
+
+### 主要图片
+
+| 01 | 02 | 03 | 04 |
+|----|----|----|----|
+| ![01](data/images/refs/01.png) | ![02](data/images/refs/02.png) | ![03](data/images/refs/03.png) | ![04](data/images/refs/04.png) |
+
+| 05 | 06 | 07 | 08 |
+|----|----|----|----|
+| ![05](data/images/refs/05.png) | ![06](data/images/refs/06.png) | ![07](data/images/refs/07.png) | ![08](data/images/refs/08.png) |
+
+| 09 | 10 | 11 | 12 |
+|----|----|----|----|
+| ![09](data/images/refs/09.png) | ![10](data/images/refs/10.png) | ![11](data/images/refs/11.png) | ![12](data/images/refs/12.png) |
+
+| 13 | 14 | 15 | 16 |
+|----|----|----|----|
+| ![13](data/images/refs/13.png) | ![14](data/images/refs/14.png) | ![15](data/images/refs/15.png) | ![16](data/images/refs/16.png) |
+
+| 17 | 18 |  |  |
+|----|----|----|----|
+| ![17](data/images/refs/17.png) | ![18](data/images/refs/18.png) |  |  |
+
+### 变体图片（带后缀）
+
+| 03-02 | 04-02 | 05-02 | 07-02 |
+|-------|-------|-------|-------|
+| ![03-02](data/images/refs/03-02.png) | ![04-02](data/images/refs/04-02.png) | ![05-02](data/images/refs/05-02.png) | ![07-02](data/images/refs/07-02.png) |
+
+| 08-02 | 09-02 | 09-03 | 11-02 |
+|-------|-------|-------|-------|
+| ![08-02](data/images/refs/08-02.png) | ![09-02](data/images/refs/09-02.png) | ![09-03](data/images/refs/09-03.png) | ![11-02](data/images/refs/11-02.png) |
+
+| 14-02 | 14-03 | 14-04 | 15-02 |
+|-------|-------|-------|-------|
+| ![14-02](data/images/refs/14-02.png) | ![14-03](data/images/refs/14-03.png) | ![14-04](data/images/refs/14-04.png) | ![15-02](data/images/refs/15-02.png) |
+
+| 16-02 | 16-03 | 18-02 |  |
+|-------|-------|-------|-------|
+| ![16-02](data/images/refs/16-02.png) | ![16-03](data/images/refs/16-03.png) | ![18-02](data/images/refs/18-02.png) |  |
+
 ## 技术架构
 
 项目采用前后端分离的架构设计：
