@@ -1,0 +1,40 @@
+{
+    "providers": {
+        "llm": "modelscope",
+        "vlm": "modelscope",
+        "text2img": "modelscope",
+        "img2img": "modelscope"
+    },
+    "model_ids": {
+        "llm": {
+            "modelscope": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "bailian": "qwen-max"
+        },
+        "vlm": {
+            "modelscope": "Qwen/Qwen2.5-VL-72B-Instruct",
+            "bailian": "qwen2.5-vl-72b-instruct"
+        },
+        "text2img": {
+            "modelscope": "Qwen/Qwen-Image",
+            "bailian": "qwen-image"
+        },
+        "img2img": {
+            "modelscope": "Qwen/Qwen-Image-Edit",
+            "bailian": "qwen-image-edit"
+        }
+    },
+    "image_transport": {
+        "modelscope": "data_uri",
+        "public_base_url": "http://127.0.0.1:8000",
+        "static_path_prefix": "/static/images"
+    },
+    "limits": {
+        "images_per_session_per_10min": 3
+    },
+    "prompt": {
+        "prompt_extend": false
+    },
+    "safety": {
+        "strict_family_friendly": true
+    }
+}

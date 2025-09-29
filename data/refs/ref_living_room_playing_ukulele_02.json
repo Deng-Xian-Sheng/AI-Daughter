@@ -1,0 +1,39 @@
+{
+    "id": "ref_living_room_playing_ukulele",
+    "path": "images/refs/02.png",
+    "caption": "小女孩在客厅弹奏尤克里里",
+    "env": {
+        "location": "客厅",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "米白",
+            "浅木色",
+            "淡蓝"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸可爱",
+        "clothing": "蓝色无袖连衣裙",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "小女孩",
+        "尤克里里",
+        "客厅",
+        "自然光"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

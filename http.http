@@ -1,0 +1,31 @@
+curl -X POST "http://127.0.0.1:8000/api/session.create" \
+     -H "Content-Type: application/json" \
+     -d '["player", "agent"]'
+
+###
+
+curl -N -H "Accept: text/event-stream" http://127.0.0.1:8000/api/stream/ae714678-b4da-47dc-919b-b3854238ab8d
+
+###
+
+curl -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "session_id=ae714678-b4da-47dc-919b-b3854238ab8d&sender_id=player&text=早上好，起床啦～" \
+  http://127.0.0.1:8000/api/message.send
+
+###
+
+{
+  "ok": true
+}
+
+
+###
+
+curl -X POST \
+  -F "session_id=ae714678-b4da-47dc-919b-b3854238ab8d" \
+  -F "sender_id=player" \
+  -F "text=看看这是啥" \
+  -F "files[]=@/home/likewendy/Desktop/AI女儿/old/头像.png" \
+  -F "files[]=@/home/likewendy/Desktop/AI女儿/old/头像爸爸.png" \
+  http://127.0.0.1:8000/api/message.send

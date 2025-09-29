@@ -1,0 +1,39 @@
+{
+    "id": "ref_child_listening_music",
+    "path": "images/refs/09.png",
+    "caption": "小女孩戴着耳机听音乐",
+    "env": {
+        "location": "室内",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "蓝色"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸可爱",
+        "clothing": "蓝色无袖上衣",
+        "accessories": "木质耳机"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "听音乐",
+        "小女孩",
+        "耳机",
+        "室内"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

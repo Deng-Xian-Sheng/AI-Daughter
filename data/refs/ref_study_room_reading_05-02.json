@@ -1,0 +1,39 @@
+{
+    "id": "ref_study_room_reading",
+    "path": "images/refs/05-02.png",
+    "caption": "小女孩在书房里看书",
+    "env": {
+        "location": "书房",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "淡蓝"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸，可爱",
+        "clothing": "蓝色背心",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "阅读",
+        "书房",
+        "小女孩",
+        "学习"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

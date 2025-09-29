@@ -1,0 +1,39 @@
+{
+    "id": "ref_bedroom_child_sitting",
+    "path": "images/refs/14-04.png",
+    "caption": "小女孩坐在床上，眼神向上看",
+    "env": {
+        "location": "卧室",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "淡蓝"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸可爱",
+        "clothing": "蓝色无袖上衣",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "小女孩",
+        "卧室",
+        "自然光",
+        "可爱"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

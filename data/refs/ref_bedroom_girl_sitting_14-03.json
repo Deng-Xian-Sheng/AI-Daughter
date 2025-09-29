@@ -1,0 +1,39 @@
+{
+    "id": "ref_bedroom_girl_sitting",
+    "path": "images/refs/14-03.png",
+    "caption": "小女孩坐在卧室里，眼神看向远方",
+    "env": {
+        "location": "卧室",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "淡蓝"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸，清秀",
+        "clothing": "蓝色吊带衫",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "小女孩",
+        "卧室",
+        "自然光",
+        "坐姿"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

@@ -1,0 +1,39 @@
+{
+    "id": "ref_back_view_girl",
+    "path": "images/refs/10.png",
+    "caption": "背对镜头的女孩站在书架前",
+    "env": {
+        "location": "室内",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "淡蓝"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "young",
+        "hair": "黑色长发",
+        "face": "none",
+        "clothing": "蓝色无袖上衣",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": false,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "女孩",
+        "背影",
+        "书架",
+        "室内"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

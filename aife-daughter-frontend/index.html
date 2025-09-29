@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>AI女儿</title>
+    <style>
+        :root {
+            --bg-grad-1: radial-gradient(1200px 800px at 10% 20%, #eef4ff, transparent 60%),
+                radial-gradient(1000px 700px at 90% 10%, #fff3e0, transparent 60%),
+                radial-gradient(900px 900px at 20% 90%, #f6ecff, transparent 60%),
+                radial-gradient(900px 700px at 80% 70%, #e6f7ff, transparent 60%);
+            --qiqi-bubble-start: #eff4ff;
+            --qiqi-bubble-end: #f7efff;
+            --qiqi-border: #e4ddff;
+
+            --dad-bubble-start: #fff9ea;
+            --dad-bubble-end: #ffe7c2;
+            --dad-border: #ffe0a6;
+
+            --text-main: #2b2b2b;
+            --text-dim: #6a6a6a;
+
+            --card-bg: rgba(255, 255, 255, 0.68);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --shadow-1: 0 10px 30px rgba(98, 74, 170, 0.15), 0 6px 18px rgba(255, 170, 70, 0.12);
+            --shadow-2: 0 2px 10px rgba(0, 0, 0, 0.08);
+            --bubble-shadow: 0 6px 18px rgba(40, 67, 128, 0.10);
+            --radius-lg: 18px;
+            --radius-md: 14px;
+
+            --max-width: min(980px, 90vw);
+            --max-height: min(84vh, 980px);
+
+            --appear-duration: 280ms;
+            --appear-ease: cubic-bezier(.22, .8, .22, 1);
+            --bubble-max-text: min(68%, 620px);
+            --bubble-max-image: min(51%, 465px); /* 3/4 */
+
+            --gen-pan: 4s;          /* 背景游走时长 */
+            --gen-blob-blur: 18px;  /* 色块模糊 */
+            --gen-blob-move: 30%;   /* 色块位移幅度 */
+            --gen-sat: 122%;
+            --gen-ctr: 112%;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text-main);
+            font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            background: linear-gradient(135deg, #fdfcff, #fffef9) fixed;
+            overflow: hidden;
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: var(--bg-grad-1);
+            animation: bgShift 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            to {
+                filter: hue-rotate(12deg) saturate(105%);
+            }
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            min-height: 100dvh;
+            padding: 5vh 4vw;
+        }
+
+        .chat-card {
+            width: var(--max-width);
+            height: var(--max-height);
+            display: flex;
+            flex-direction: column;
+            gap: 0; 
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: calc(var(--radius-lg) + 6px);
+            box-shadow: var(--shadow-1);
+            backdrop-filter: blur(12px) saturate(130%);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px 18px;
+            border-bottom: 1px dashed rgba(120, 120, 160, .18);
+            color: #55518a;
+            font-weight: 600;
+            letter-spacing: .3px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, .85), rgba(255, 255, 255, .6));
+        }
+
+        .pill {
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(240, 245, 255, .9), rgba(247, 239, 255, .9));
+            border: 1px solid rgba(198, 183, 255, .5);
+            box-shadow: var(--shadow-2);
+        }
+
+        .glow-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffd27e, #ffb26b 70%, transparent 80%);
+            box-shadow: 0 0 12px rgba(255, 178, 107, .55);
+        }
+
+        /* chat-body 纵向 Flex：上方时间线，下方主区 */
+        .chat-body {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            flex: 1 1 auto;
+            overflow: hidden;
+            padding: 0; /* timeline-bar 会盖住上边距，这里不再需要 padding */
+            background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.4));
+        }
+
+        .timeline-bar {
+            padding: 8px 14px;
+            border-bottom: 1px dashed rgba(120, 120, 160, .18);
+            background: rgba(255, 255, 255, .6);
+            font-size: 13px;
+            color: #5a5a88;
+            flex: 0 0 auto; 
+        }
+
+        /*横向 Flex：左 tabs 固定宽，右 chat-window 弹性伸展 */
+        .main-area {
+            flex: 1 1 0%;
+            min-height: 0;
+            display: flex;
+        }
+
+        /* tabs 固定宽度；可按需调宽 */
+        .tabs-panel {
+            flex: 0 0 220px;
+            max-width: 280px;
+            min-width: 200px;
+            overflow: auto;
+            border-right: 1px dashed rgba(120,120,160,.18);
+            background: rgba(255,255,255,.5);
+            padding: 8px;
+        }
+
+        .tab-item {
+            padding: 8px 10px;
+            border-radius: 10px;
+            margin: 6px 4px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, .8);
+            box-shadow: var(--shadow-2);
+            font-size: 14px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tab-item.active {
+            background: linear-gradient(135deg, #f0f4ff, #f7efff);
+            border: 1px solid rgba(198, 183, 255, .5);
+        }
+
+        .tab-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffb26b;
+            box-shadow: 0 0 6px rgba(255, 178, 107, .6);
+        }
+
+        /* chat-window 垂直布局：上消息，下输入 */
+        .chat-window {
+            flex: 1 1 0%;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* messages 弹性高度，可滚动；空态不把容器撑破 */
+        .messages {
+            flex: 1 1 0%;
+            min-height: 0;
+            overflow: auto;
+            padding: 18px 20px 24px;
+            scrollbar-width: thin;
+            scrollbar-color: #c9c7ff #f3f2ff;
+            background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.4));
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: #f6f5ff;
+            border-radius: 10px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ddd7ff, #ffdba6);
+            border-radius: 10px;
+            border: 2px solid #f6f5ff;
+        }
+
+        .msg-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            margin: 10px 0 16px;
+            width: 100%;
+            min-width: 0;/* 防止父项对宽度的约束影响子项计算 */
+        }
+
+        .msg-row.right {
+            justify-content: flex-end;
+        }
+
+        .msg-row .bubble { width: auto; display: inline-block; max-width: 100%; }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .08);
+            background: #fff center/cover no-repeat;
+        }
+
+        .bubble-wrap {
+            max-width: var(--bubble-max-text);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 0 1 auto;
+            width: auto;
+            min-width: 0;       /* 防止在特殊情况下溢出导致压缩 */
+        }
+
+        .nickname {
+            font-size: 12px;
+            color: var(--text-dim);
+            opacity: .9;
+            padding: 0 8px;
+        }
+
+        .nickname.right {
+            text-align: right;
+        }
+
+        .bubble {
+            position: relative;
+            padding: 12px 14px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--bubble-shadow);
+            border: 1px solid transparent;
+            animation: popIn var(--appear-duration) var(--appear-ease);
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        .bubble.text {
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .bubble.image {
+            padding: 8px;
+            width: 100%; 
+            display: block; 
+        }
+
+        .bubble.image img {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+            max-height: min(62vh, 560px);
+            object-fit: contain;
+        }
+
+        .bubble.no-anim { animation: none !important; }
+
+        .msg-row.left .bubble {
+            background: linear-gradient(135deg, var(--qiqi-bubble-start), var(--qiqi-bubble-end));
+            border-color: var(--qiqi-border);
+            border-bottom-left-radius: 6px;
+        }
+
+        .msg-row.right .bubble {
+            background: linear-gradient(135deg, var(--dad-bubble-start), var(--dad-bubble-end));
+            border-color: var(--dad-border);
+            border-bottom-right-radius: 6px;
+        }
+
+        /* 仅图片类消息行：把容器拉满，这样内部的图片或占位就能 100% 等于消息列宽 */
+        .msg-row.image .bubble-wrap {
+            flex: 1 1 100%;
+            width: 100%;
+            max-width: var(--bubble-max-image);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: translateY(8px) scale(.98);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .composer {
+            display: grid;
+            grid-template-columns: 1fr 140px;  /* 右侧按钮列固定宽 */
+            grid-auto-rows: auto;
+            gap: 8px 10px;
+            align-items: start;
+            padding: 10px;
+            background: rgba(255,255,255,.7);
+            border-top: 1px dashed rgba(120,120,160,.18);
+        }
+
+        .composer textarea {
+            grid-column: 1;
+            flex: 1;
+            resize: none;
+            height: 64px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 15px;
+        }
+
+        .composer .actions {
+            grid-column: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .composer .actions .btn { width: 100%; }
+
+        .btn {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #f0f4ff, #f7efff);
+            border: 1px solid rgba(198, 183, 255, .5);
+        }
+
+        /* 预览托盘：显示待发送缩略图 */
+        .attach-tray {
+            grid-column: 1 / -1;       /* 托盘占两列，避免挤压按钮列 */
+            display: flex; gap: 8px; padding: 8px 4px; margin: 0 0 2px 0;
+            overflow-x: auto; background: rgba(255,255,255,.6);
+            border-radius: 10px; border: 1px dashed rgba(120,120,160,.18);
+        }
+        .attach-tray .thumb {
+            position: relative; width: 84px; height: 84px;
+            border-radius: 8px; overflow: hidden;
+            border: 1px solid rgba(0,0,0,.08); box-shadow: var(--shadow-2); background:#fff;
+            flex: 0 0 auto;
+        }
+        .attach-tray .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .attach-tray .thumb .x {
+            position: absolute; top: 4px; right: 4px; width: 20px; height: 20px;
+            border: none; border-radius: 50%; background: rgba(0,0,0,.5); color: #fff;
+            cursor: pointer; line-height: 20px; text-align: center; font-size: 12px;
+        }
+        .attach-tray .thumb .overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,.45);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 12px;
+        }
+        .attach-tray .thumb .overlay.error { background: rgba(200,0,0,.55); }
+
+        /* 正方形占位：与图片泡同宽；背景流动更明显 */
+        .img-gen-skeleton {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 16px rgba(0,0,0,.08);
+
+            /* 基底：与页面一致的多层渐变，放大后做平移动画 */
+            background:
+                radial-gradient(1200px 800px at 10% 20%, #eef4ff, transparent 60%),
+                radial-gradient(1000px 700px at 90% 10%, #fff3e0, transparent 60%),
+                radial-gradient(900px 900px at 20% 90%, #f6ecff, transparent 60%),
+                radial-gradient(900px 700px at 80% 70%, #e6f7ff, transparent 60%);
+            background-size: 260% 260%;
+            background-position: 0% 0%;
+            animation: bgPan var(--gen-pan) ease-in-out infinite alternate;
+            filter: saturate(var(--gen-sat)) contrast(var(--gen-ctr));
+        }
+
+
+        /* 背景平移：画布缓慢游走（更明显） */
+        @keyframes bgPan {
+            0%   { background-position: 0%   0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* 漂浮几何图（轻量） */
+        .shape {
+            position: absolute;
+            opacity: .18;
+            filter: blur(.2px);
+            background: linear-gradient(135deg, #ffd27e, #ffe8a8);
+            mix-blend-mode: multiply;
+            border-radius: 16px;
+            animation:
+                floatY var(--dur, 16s) ease-in-out infinite alternate,
+                spin var(--rot, 24s) linear infinite;
+            pointer-events: none;
+        }
+        .shape[data-t="circle"]  { border-radius: 50%; }
+        .shape[data-t="diamond"] { transform: rotate(45deg); border-radius: 18px; }
+        .shape[data-t="triangle"]{
+            background: none;
+            width: 0; height: 0;
+            border-left: calc(var(--s, 120px)/2) solid transparent;
+            border-right: calc(var(--s, 120px)/2) solid transparent;
+            border-bottom: var(--s, 120px) solid rgba(187,209,255,.35);
+            border-radius: 0;
+            animation: floatY var(--dur, 16s) ease-in-out infinite alternate;
+        }
+
+        @keyframes floatY { from { transform: translateY(-10px); } to { transform: translateY(16px); } }
+        @keyframes spin   { to   { transform: rotate(1turn); } }
+
+        /* 两团色块云：更大的位移、更明显的透明度呼吸 */
+        .img-gen-skeleton::before,
+        .img-gen-skeleton::after {
+            content: "";
+            position: absolute;
+            width: 92%; 
+            height: 92%;
+            border-radius: 50%;
+            filter: blur(var(--gen-blob-blur));
+            opacity: .60;
+            mix-blend-mode: screen;
+        }
+
+        .img-gen-skeleton::before {
+            left: -18%;
+            top: -16%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,210,126,.75), rgba(255,232,168,.38) 60%, transparent 72%);
+            animation: blobA 8s ease-in-out infinite alternate;
+        }
+        .img-gen-skeleton::after {
+            right: -16%;
+            bottom: -18%;
+            background: radial-gradient(circle at 70% 70%, rgba(179,229,255,.72), rgba(199,191,255,.38) 60%, transparent 72%);
+            animation: blobB 9s ease-in-out infinite alternate;
+        }
+
+        /* 色块云：位移 + 轻微旋转 + 透明度呼吸 */
+        @keyframes blobA {
+            0%{transform: translate(0,0) rotate(0) scale(1); opacity:.5;}
+            100%{transform: translate(var(--gen-blob-move), calc(var(--gen-blob-move) - 4%)) rotate(14deg) scale(1.12); opacity:.72;}
+        }
+        @keyframes blobB {
+            0%{transform: translate(0,0) rotate(0) scale(1); opacity:.5;}
+            100%{transform: translate(calc(-1 * var(--gen-blob-move)), calc(-1 * var(--gen-blob-move) - 2%)) rotate(-12deg) scale(1.1); opacity:.70;}
+        }
+
+        /* 动效可尊重“减少动效”偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            .img-gen-skeleton { animation: none; }
+            .img-gen-skeleton::before, .img-gen-skeleton::after { animation: none; }
+        }
+
+        /* 3) 仅当这一行包含图片泡（正常图片、生成中占位、生成失败都归为 .bubble.image）才拉满容器 */
+        .bubble-wrap:has(.bubble.image) {
+            width: 100%;
+            flex: 1 1 100%;
+            max-width: var(--bubble-max-image);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-layer"></div>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+{
+    "id": "ref_girl_running_outdoor",
+    "path": "images/refs/15.png",
+    "caption": "小女孩在户外奔跑，头发随风飘扬",
+    "env": {
+        "location": "户外",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅蓝",
+            "绿色",
+            "米白"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "棕色短发",
+        "face": "无",
+        "clothing": "蓝色背心裙",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": false,
+        "background": true
+    },
+    "tags": [
+        "户外",
+        "奔跑",
+        "小女孩",
+        "自然光"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

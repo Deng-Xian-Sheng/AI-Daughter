@@ -1,0 +1,39 @@
+{
+    "id": "ref_living_room_girl_back_view",
+    "path": "images/refs/11.png",
+    "caption": "女孩背对镜头站在客厅里",
+    "env": {
+        "location": "客厅",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "淡蓝"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "young",
+        "hair": "黑色长发",
+        "face": "无明显特征",
+        "clothing": "蓝色无袖上衣",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": false,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "客厅",
+        "女孩",
+        "背影",
+        "自然光"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

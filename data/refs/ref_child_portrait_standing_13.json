@@ -1,0 +1,39 @@
+{
+    "id": "ref_child_portrait_standing",
+    "path": "images/refs/13.png",
+    "caption": "一个穿着蓝色背心的小女孩站在墙边微笑",
+    "env": {
+        "location": "室内",
+        "lighting": "柔和自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅蓝",
+            "米白",
+            "淡黄"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸，可爱气质",
+        "clothing": "蓝色无袖背心",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": false,
+        "background": true
+    },
+    "tags": [
+        "儿童",
+        "肖像",
+        "站立",
+        "微笑"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

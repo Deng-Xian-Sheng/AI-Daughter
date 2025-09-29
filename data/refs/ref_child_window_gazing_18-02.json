@@ -1,0 +1,39 @@
+{
+    "id": "ref_child_window_gazing",
+    "path": "images/refs/18-02.png",
+    "caption": "小女孩在窗边凝视远方",
+    "env": {
+        "location": "室内",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅蓝",
+            "米白",
+            "灰色"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸，可爱",
+        "clothing": "蓝色无袖上衣",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": false,
+        "background": true
+    },
+    "tags": [
+        "小女孩",
+        "窗边",
+        "凝视",
+        "自然光"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}

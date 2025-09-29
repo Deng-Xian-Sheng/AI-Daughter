@@ -1,0 +1,39 @@
+{
+    "id": "ref_bedroom_reading",
+    "path": "images/refs/06.png",
+    "caption": "小女孩坐在床上拿着电话微笑",
+    "env": {
+        "location": "卧室",
+        "lighting": "自然光",
+        "style": "写实",
+        "color_palette": [
+            "浅木色",
+            "米白",
+            "蓝色"
+        ]
+    },
+    "character": {
+        "gender": "female",
+        "age": "child",
+        "hair": "黑色长发",
+        "face": "圆脸可爱",
+        "clothing": "蓝色无袖上衣和白色短裤",
+        "accessories": "无明显饰品"
+    },
+    "editable": {
+        "pose": true,
+        "action": true,
+        "props": true,
+        "background": true
+    },
+    "tags": [
+        "小女孩",
+        "卧室",
+        "阅读",
+        "电话"
+    ],
+    "style": [
+        "realistic",
+        "soft lighting"
+    ]
+}
