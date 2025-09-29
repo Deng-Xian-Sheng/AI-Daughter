@@ -205,3 +205,19 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# 自定义
+/img_gen.txt
+/vnev
+/old/2025-08-31 10-36-38.mkv
+/old/AI女儿.mp4
+/data-images-refs-nude
+node_modules
+
+# 运行产生的数据
+/data/timeline.json
+/data/sessions_index.json
+/data/sessions/*
+/data/images/uploads/*
+/data/images/generated/*
+/data/image_meta/*
