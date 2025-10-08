@@ -1,39 +1,39 @@
 {
-    "id": "ref_child_portrait_indoor",
-    "path": "images/refs/12.png",
-    "caption": "室内背景下穿着蓝色无袖毛衣的小女孩",
-    "env": {
-        "location": "室内",
-        "lighting": "柔和",
-        "style": "写实",
-        "color_palette": [
-            "浅蓝",
-            "米白",
-            "浅木色"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸，可爱气质",
-        "clothing": "蓝色无袖毛衣",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "小女孩",
-        "室内",
-        "蓝色毛衣",
-        "长发"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_child_portrait_indoor_12",
+  "path": "images/refs/12.png",
+  "caption": "室内背景下穿着蓝色无袖毛衣的小女孩",
+  "env": {
+    "location": "室内",
+    "lighting": "柔和",
+    "style": "写实",
+    "color_palette": [
+      "浅蓝",
+      "米白",
+      "浅木色"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸，可爱气质",
+    "clothing": "蓝色无袖毛衣",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "小女孩",
+    "室内",
+    "蓝色毛衣",
+    "长发"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

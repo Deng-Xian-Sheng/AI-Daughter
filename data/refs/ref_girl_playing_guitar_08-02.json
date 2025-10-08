@@ -1,39 +1,39 @@
 {
-    "id": "ref_girl_playing_guitar",
-    "path": "images/refs/08-02.png",
-    "caption": "小女孩在室内弹吉他，笑容灿烂。",
-    "env": {
-        "location": "室内",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "浅木色",
-            "米白",
-            "淡蓝"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸，可爱",
-        "clothing": "蓝色无袖上衣",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "小女孩",
-        "弹吉他",
-        "室内",
-        "自然光"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_girl_playing_guitar_08-02",
+  "path": "images/refs/08-02.png",
+  "caption": "小女孩在室内弹吉他，笑容灿烂。",
+  "env": {
+    "location": "室内",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "浅木色",
+      "米白",
+      "淡蓝"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸，可爱",
+    "clothing": "蓝色无袖上衣",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "小女孩",
+    "弹吉他",
+    "室内",
+    "自然光"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

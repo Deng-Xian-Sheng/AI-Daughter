@@ -1,39 +1,39 @@
 {
-    "id": "ref_park_picnic_child",
-    "path": "images/refs/17.png",
-    "caption": "小女孩在公园野餐垫上微笑",
-    "env": {
-        "location": "公园",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "绿色",
-            "蓝色",
-            "红色"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色短发",
-        "face": "圆脸可爱",
-        "clothing": "蓝色无袖上衣和白色短裤",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "公园",
-        "野餐",
-        "小女孩",
-        "微笑"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_park_picnic_child_17",
+  "path": "images/refs/17.png",
+  "caption": "小女孩在公园野餐垫上微笑",
+  "env": {
+    "location": "公园",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "绿色",
+      "蓝色",
+      "红色"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色短发",
+    "face": "圆脸可爱",
+    "clothing": "蓝色无袖上衣和白色短裤",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "公园",
+    "野餐",
+    "小女孩",
+    "微笑"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

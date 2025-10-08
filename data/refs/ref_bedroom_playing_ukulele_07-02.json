@@ -1,40 +1,40 @@
 {
-    "id": "ref_bedroom_playing_ukulele",
-    "path": "images/refs/07-02.png",
-    "caption": "小女孩在床上弹奏尤克里里",
-    "env": {
-        "location": "卧室",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "浅木色",
-            "米白",
-            "暖黄"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸，可爱",
-        "clothing": "白色短袖和灰色短裤",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "卧室",
-        "床",
-        "尤克里里",
-        "小女孩",
-        "自然光"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_bedroom_playing_ukulele_07-02",
+  "path": "images/refs/07-02.png",
+  "caption": "小女孩在床上弹奏尤克里里",
+  "env": {
+    "location": "卧室",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "浅木色",
+      "米白",
+      "暖黄"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸，可爱",
+    "clothing": "白色短袖和灰色短裤",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "卧室",
+    "床",
+    "尤克里里",
+    "小女孩",
+    "自然光"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

@@ -1,39 +1,39 @@
 {
-    "id": "ref_bedroom_playing_guitar",
-    "path": "images/refs/03-02.png",
-    "caption": "小女孩在窗边弹奏吉他",
-    "env": {
-        "location": "卧室",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "浅木色",
-            "米白",
-            "橙色"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸可爱",
-        "clothing": "蓝色无袖连衣裙",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "小女孩",
-        "弹吉他",
-        "卧室",
-        "自然光"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_bedroom_playing_guitar_03-02",
+  "path": "images/refs/03-02.png",
+  "caption": "小女孩在窗边弹奏吉他",
+  "env": {
+    "location": "卧室",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "浅木色",
+      "米白",
+      "橙色"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸可爱",
+    "clothing": "蓝色无袖连衣裙",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "小女孩",
+    "弹吉他",
+    "卧室",
+    "自然光"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

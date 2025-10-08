@@ -1,39 +1,39 @@
 {
-    "id": "ref_bedroom_child_portrait",
-    "path": "images/refs/01.png",
-    "caption": "小女孩在卧室里微笑",
-    "env": {
-        "location": "卧室",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "浅蓝",
-            "米白",
-            "木色"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸，可爱",
-        "clothing": "蓝色无袖上衣",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "小女孩",
-        "卧室",
-        "微笑",
-        "自然光"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_bedroom_child_portrait_01",
+  "path": "images/refs/01.png",
+  "caption": "小女孩在卧室里微笑",
+  "env": {
+    "location": "卧室",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "浅蓝",
+      "米白",
+      "木色"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸，可爱",
+    "clothing": "蓝色无袖上衣",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "小女孩",
+    "卧室",
+    "微笑",
+    "自然光"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

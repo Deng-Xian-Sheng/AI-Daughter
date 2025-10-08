@@ -1,39 +1,39 @@
 {
-    "id": "ref_bedroom_child_reading",
-    "path": "images/refs/16-03.png",
-    "caption": "小女孩坐在床上看书",
-    "env": {
-        "location": "卧室",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "浅蓝色",
-            "米白",
-            "木色"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸，可爱",
-        "clothing": "浅蓝色无袖上衣",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "小女孩",
-        "阅读",
-        "卧室",
-        "自然光"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_bedroom_child_reading_16-03",
+  "path": "images/refs/16-03.png",
+  "caption": "小女孩坐在床上看书",
+  "env": {
+    "location": "卧室",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "浅蓝色",
+      "米白",
+      "木色"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸，可爱",
+    "clothing": "浅蓝色无袖上衣",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "小女孩",
+    "阅读",
+    "卧室",
+    "自然光"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

@@ -1,39 +1,39 @@
 {
-    "id": "ref_birthday_celebration_child",
-    "path": "images/refs/04-02.png",
-    "caption": "小女孩在生日蛋糕前双手合十许愿",
-    "env": {
-        "location": "室内",
-        "lighting": "自然光",
-        "style": "写实",
-        "color_palette": [
-            "浅木色",
-            "米白",
-            "蓝色"
-        ]
-    },
-    "character": {
-        "gender": "female",
-        "age": "child",
-        "hair": "黑色长发",
-        "face": "圆脸，可爱",
-        "clothing": "蓝色无袖上衣",
-        "accessories": "无明显饰品"
-    },
-    "editable": {
-        "pose": true,
-        "action": true,
-        "props": true,
-        "background": true
-    },
-    "tags": [
-        "生日",
-        "蛋糕",
-        "庆祝",
-        "小女孩"
-    ],
-    "style": [
-        "realistic",
-        "soft lighting"
+  "id": "ref_birthday_celebration_child_04-02",
+  "path": "images/refs/04-02.png",
+  "caption": "小女孩在生日蛋糕前双手合十许愿",
+  "env": {
+    "location": "室内",
+    "lighting": "自然光",
+    "style": "写实",
+    "color_palette": [
+      "浅木色",
+      "米白",
+      "蓝色"
     ]
+  },
+  "character": {
+    "gender": "female",
+    "age": "child",
+    "hair": "黑色长发",
+    "face": "圆脸，可爱",
+    "clothing": "蓝色无袖上衣",
+    "accessories": "无明显饰品"
+  },
+  "editable": {
+    "pose": true,
+    "action": true,
+    "props": true,
+    "background": true
+  },
+  "tags": [
+    "生日",
+    "蛋糕",
+    "庆祝",
+    "小女孩"
+  ],
+  "style": [
+    "realistic",
+    "soft lighting"
+  ]
 }

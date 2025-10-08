@@ -34,7 +34,7 @@ async def ms_text2img(model: str, prompt: str, negative: str | None, size: str |
 async def ms_img2img(model: str, prompt: str, image_url_or_data_uri: str, negative: str | None, size: str | None, seed: Optional[int] = None) -> str:
     """Same endpoint; Qwen-Image-Edit expects image_url field. We'll try data URI if configured."""
     import json
-    payload = {"model": model, "prompt": prompt, "image_url": image_url_or_data_uri}
+    payload = {"model": model, "prompt": prompt, "image": image_url_or_data_uri}
     if negative:
         payload["negative_prompt"] = negative
     if size:
