@@ -10,6 +10,7 @@ from app.services.timeline_engine import get_slice, tick as tl_tick
 from app.services.image_service import run_image_task
 from app.services.ref_selector import select_reference
 from app.services.ref_registry import register_ref_image
+from app.services.edit_planner import plan_img2img_edit
 
 MAX_CONTEXT = 12
 
@@ -193,6 +194,7 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
 
     # 图像决定与任务（img2img 优先）
     if user_text:
+        # todo 修改_need_image以合理判断是否生成图片
         need, mode, target = _need_image(user_text, full_text)
         if need:
             from app.services.prompt_writer import build_text2img_prompt, build_img2img_edit_prompt
@@ -241,13 +243,25 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
                             ref_image_id = reg["image_id"]
 
                             # 5) 生成 img2img 编辑提示词（强调“保持身份/五官/发色不变”）
-                            pos, neg = build_img2img_edit_prompt({
-                                "change_action": "根据本轮描述进行的具体动作/姿态/道具变化",
-                                "change_env": "如需从卧室切到目标环境则调整，否则保留原环境并轻微微调",
-                                "props": "按描述增减",
-                                "lighting": "自然/暖光，柔和",
-                                "framing": "中景"
-                            })
+                            # 读取参考图JSON，给planner更多上下文（环境/人物特征）
+                            ref_json = None
+                            try:
+                                from pathlib import Path
+                                import json as _json
+                                REF_DIR = Path(__file__).resolve().parents[2] / "data" / "refs"
+                                ref_file = REF_DIR / f"{ref_id}.json"
+                                if ref_file.exists():
+                                    ref_json = _json.loads(ref_file.read_text(encoding="utf-8"))
+                            except Exception:
+                                ref_json = None
+                                print(f"⚠️⚠️⚠️路径参考图描述json路径不存在：{ref_json}")
+
+                            # 基于本轮目标 + 参考图META + 时间线，生成结构化编辑计划
+                            tl = get_slice()
+                            plan = plan_img2img_edit(target_text=target, ref_meta=ref_json, timeline=tl)
+
+                            # 生成强化的一致性编辑提示词
+                            pos, neg = build_img2img_edit_prompt(plan)
 
                             # 6) 触发 img2img，完成后落库由 _watch_and_publish_task 负责
                             task_id = await run_image_task("img2img", pos, neg, "auto", None, ref_image_id, None)

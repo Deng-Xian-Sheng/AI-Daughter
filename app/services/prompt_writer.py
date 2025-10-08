@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-NEGATIVE_COMMON = "低分辨率, 最差质量, 模糊, 过曝, 过暗, 变形, 畸形, bad hands, 文字, logo, 水印, 涂抹痕迹, 不自然皮肤, 夸张滤镜, 版权标记, 暧昧或性化, gore, injury"
+NEGATIVE_COMMON = "低分辨率, 最差质量, 模糊, 过曝, 过暗, 变形, 畸形, bad hands, 文字, logo, 水印, 涂抹痕迹, 不自然皮肤, 夸张滤镜, 版权标记, 裁剪, 多人误入画面, 额外人物, 视角错乱"
 
 def decide_size(aspect_policy: str = "auto", scene_hint: str | None = None) -> str:
     # portrait: 1140x1472; square: 1328x1328; landscape: 1664x928
@@ -33,17 +33,27 @@ def build_text2img_prompt(desc: dict) -> tuple[str, str]:
 
 def build_img2img_edit_prompt(edit: dict) -> tuple[str, str]:
     """
-    edit: {keep_identity: True, change_action, change_env?, props?, lighting?, framing?}
+    edit: {change_action, change_env, props, lighting, framing}
     """
-    keep = "保持人物身份、五官、发色、发型不变；"
-    action = f"将人物动作改为 {edit.get('change_action','')}; "
-    env = f"背景调整为 {edit.get('change_env','原环境微调')}; "
-    props = f"添加/替换道具为 {edit.get('props','按需保持')}; "
-    lighting = f"光线 {edit.get('lighting','自然柔和')}; "
-    framing = f"构图以 {edit.get('framing','中景')} 为主；"
-    style = "整体风格与参考图一致；无文字与水印；高分辨率。"
-    pos = keep + action + env + props + lighting + framing + style
-    return pos, NEGATIVE_COMMON
+    keep = (
+        "保持人物的身份与外貌与参考图一致；不要改变五官、脸型、年龄、肤色、发型与发色；"
+        "不要改变服装款式与主色（除非明确说明换衣服）；"
+        "保持参考图的整体风格与色彩倾向；"
+    )
+    action = f"将人物动作/姿态改为：{edit.get('change_action','保持姿态轻微调整')}；"
+    env = edit.get("change_env","原环境微调")
+    if env and env not in ("原环境微调","保持原环境"):
+        env_txt = f"将背景环境转换为：{env}（在不改变人物的前提下），保留参考图风格一致性；"
+    else:
+        env_txt = "背景仅做轻微微调，保持参考图的空间布局与关键元素；"
+    props = f"道具：{edit.get('props','按需保持')}；"
+    lighting = f"光线：{edit.get('lighting','自然柔和')}；"
+    framing = f"构图以{edit.get('framing','中景')}为主；"
+    style = "整体风格与参考图一致；无文字和水印；高分辨率。"
+    pos = keep + action + env_txt + props + lighting + framing + style
+
+    negative = NEGATIVE_COMMON + ", 改变人物脸部, 改变人物发型, 改变服饰风格, 新增人物, 背景完全重构"
+    return pos, negative
 
 def build_avatar_prompts(constraints: dict, n: int = 4) -> list[tuple[str, str]]:
     """
