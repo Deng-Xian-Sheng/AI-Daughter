@@ -222,3 +222,4 @@ node_modules
 /data/images/generated/*
 /data/image_meta/*
 /data/refs_map.json
+/my_key
