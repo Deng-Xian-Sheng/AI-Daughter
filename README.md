@@ -8,10 +8,11 @@
 
 ## 界面预览
 
-| 截图1 | 截图2 | 截图3 |
-|-------|-------|-------|
-| ![alt text](README.md.img/截图_选择区域_20251009143407.png) | ![alt text](README.md.img/截图_选择区域_20251009144021.png) | ![alt text](README.md.img/截图_选择区域_20251009144201.png) |
-| ![alt text](README.md.img/截图_选择区域_20251009145020.png) | ![alt text](README.md.img/截图_选择区域_20251009145048.png) | ![alt text](README.md.img/截图_选择区域_20251009145131.png) |
+| 截图 | 截图 |
+|------|------|
+| ![alt text](README.md.img/截图_选择区域_20251009143407.png) | ![alt text](README.md.img/截图_选择区域_20251009144021.png) |
+| ![alt text](README.md.img/截图_选择区域_20251009144201.png) | ![alt text](README.md.img/截图_选择区域_20251009145020.png) |
+| ![alt text](README.md.img/截图_选择区域_20251009145048.png) | ![alt text](README.md.img/截图_选择区域_20251009145131.png) |
 
 ## 以图生图参考图预览
 
