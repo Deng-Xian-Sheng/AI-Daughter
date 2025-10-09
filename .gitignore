@@ -223,3 +223,4 @@ node_modules
 /data/image_meta/*
 /data/refs_map.json
 /my_key
+/other
