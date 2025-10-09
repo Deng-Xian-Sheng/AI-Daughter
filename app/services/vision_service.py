@@ -9,8 +9,9 @@ SUMMARY_PROMPT = "请用简洁结构化JSON总结图片：{caption, scene, actio
 def image_public_or_data_uri(image_rel_path: str) -> str:
     cfg = load_settings()
     mode = cfg.image_transport.modelscope  # image transport policy for modelscope VLM也可用
-    if mode == "public_url":
-        return f"{cfg.image_transport.public_base_url}{cfg.image_transport.static_path_prefix}/{image_rel_path}"
+    # ! 不知道为啥魔塔社区的VLM API似乎不能从url读取图片，于是注释掉
+    # if mode == "public_url":
+        # return f"{cfg.image_transport.public_base_url}{cfg.image_transport.static_path_prefix}/{image_rel_path}"
     # data uri
     p = IMAGES_DIR / image_rel_path
     mime = "image/png" if p.suffix.lower()==".png" else "image/jpeg"
