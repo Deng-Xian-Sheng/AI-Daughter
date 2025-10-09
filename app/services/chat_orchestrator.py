@@ -11,8 +11,63 @@ from app.services.image_service import run_image_task
 from app.services.ref_selector import select_reference
 from app.services.ref_registry import register_ref_image
 from app.services.edit_planner import plan_img2img_edit
+from datetime import datetime, timedelta
+import re, json
+from pathlib import Path
+from app.services.image_decider import decide_image_llm
+from app.services.memory_store import load_messages
+from app.config import load_settings, DATA_DIR
 
 MAX_CONTEXT = 12
+
+def _recent_images_count(session_id: str, minutes: int = 10) -> int:
+    try:
+        msgs = load_messages(session_id)
+        now = datetime.utcnow()
+        dt = timedelta(minutes=minutes)
+        c = 0
+        for m in reversed(msgs):
+            if m.get("type") == "image":
+                created = m.get("created_at")
+                if not created: continue
+                t = datetime.fromisoformat(created)
+                if now - t <= dt:
+                    c += 1
+                else:
+                    break
+        return c
+    except Exception:
+        return 0
+
+def _need_image_regex(user_text: str, reply_text: str):
+    kw = "发图|看看|给我看|画一个|拍一张|起床|揉眼睛|刷牙|看书|买西瓜|西瓜|市场|户外|野外|卧室|房间"
+    if re.search(kw, user_text) or re.search(kw, reply_text):
+        if re.search("她|你|琪琪|女儿|卧室|房间", user_text + reply_text):
+            return True, "img2img", f"{user_text}；若不明确则依据回复内容：{reply_text}"
+        return True, "text2img", f"{user_text}；参考回复：{reply_text}"
+    return False, "text2img", ""
+
+def _has_refs() -> bool:
+    ref_dir = Path(DATA_DIR / "refs")
+    return ref_dir.exists() and any(ref_dir.glob("*.json"))
+
+def _need_image_llm_decision(user_text: str, reply_text: str, session_id: str):
+    cfg = load_settings()
+    tl = get_slice()
+    has_ref = _has_refs()
+    recent = _recent_images_count(session_id, minutes=10)
+    limit = cfg.limits.images_per_session_per_10min
+
+    try:
+        data = decide_image_llm(user_text, reply_text, tl, has_ref, recent, limit)
+        if not data.get("generate"):
+            return False, "text2img", ""
+        mode = data.get("mode", "text2img")
+        target = data.get("target", f"{user_text}；参考回复：{reply_text}")
+        return True, mode, target
+    except Exception:
+        # 回退正则
+        return _need_image_regex(user_text, reply_text)
 
 def _render_name(sender_id: str) -> str:
     ents = get_entities()
@@ -79,18 +134,6 @@ def _gather_context(sess_id: str) -> List[Dict]:
                     if cap:
                         ctx.append({"role":"user","content": f"[图片摘要] {cap}"})
     return ctx
-
-def _need_image(user_text: str, reply_text: str) -> Tuple[bool, str, str]:
-    """
-    返回: (是否生成图, 模式 text2img|img2img, 目标描述)
-    """
-    kw = "发图|看看|给我看|画一个|拍一张|起床|揉眼睛|刷牙|看书|买西瓜|西瓜|市场|户外|野外|卧室|房间"
-    if re.search(kw, user_text) or re.search(kw, reply_text):
-        # 若涉及“AI女儿/卧室/她/房间” 更倾向img2img
-        if re.search("她|你|琪琪|女儿|卧室|房间", user_text + reply_text):
-            return True, "img2img", f"{user_text}；若不明确则依据回复内容：{reply_text}"
-        return True, "text2img", f"{user_text}；参考回复：{reply_text}"
-    return False, "text2img", ""
 
 async def _watch_and_publish_task(session_id: str, task_id: str):
     from app.services.image_service import get_task
@@ -192,17 +235,14 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
     tl = tl_tick(mode="dialogue")
     await hub.publish(session_id, {"type":"timeline_hint", "slice": tl})
 
-    # 图像决定与任务（img2img 优先）
+    # 图像决定与任务（img2img 优先，使用LLM决策）
     if user_text:
-        # todo 修改_need_image以合理判断是否生成图片
-        need, mode, target = _need_image(user_text, full_text)
+        need, mode, target = _need_image_llm_decision(user_text, full_text, session_id)
         if need:
             from app.services.prompt_writer import build_text2img_prompt, build_img2img_edit_prompt
             try:
                 if mode == "img2img":
-                    # 1) 读取参考图库
-                    import json
-                    from pathlib import Path
+                    # refs 读取
                     REF_DIR = Path(__file__).resolve().parents[2] / "data" / "refs"
                     refs = []
                     if REF_DIR.exists():
@@ -211,9 +251,8 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
                                 refs.append(json.loads(f.read_text(encoding="utf-8")))
                             except Exception:
                                 pass
-
-                    # 2) 无参考图则回退 text2img
                     if not refs:
+                        # 回退 text2img
                         pos2, neg2 = build_text2img_prompt({
                             "who":"女孩","where":"卧室或对话相关场所",
                             "action":"与描述相符的动作","props":"家居小物或相关道具",
@@ -223,12 +262,10 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
                         await hub.publish(session_id, {"type":"image_task_queued", "task_id": task_id})
                         asyncio.create_task(_watch_and_publish_task(session_id, task_id))
                     else:
-                        # 3) LLM 选择最匹配参考图
+                        # 选择参考图
                         ref_choice = await select_reference(target, refs)
                         ref_id = ref_choice.get("ref_id")
-
                         if not ref_id:
-                            # 安全回退
                             pos2, neg2 = build_text2img_prompt({
                                 "who":"女孩","where":"卧室或对话相关场所",
                                 "action":"与描述相符的动作","props":"家居小物或相关道具",
@@ -238,38 +275,29 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
                             await hub.publish(session_id, {"type":"image_task_queued", "task_id": task_id})
                             asyncio.create_task(_watch_and_publish_task(session_id, task_id))
                         else:
-                            # 4) 注册参考图为可用 ref_image_id（复制到 uploads/）
+                            # 注册ref并计划编辑
                             reg = register_ref_image(ref_id)
                             ref_image_id = reg["image_id"]
 
-                            # 5) 生成 img2img 编辑提示词（强调“保持身份/五官/发色不变”）
-                            # 读取参考图JSON，给planner更多上下文（环境/人物特征）
+                            # 读取参考图JSON，带入planner
                             ref_json = None
                             try:
-                                from pathlib import Path
-                                import json as _json
-                                REF_DIR = Path(__file__).resolve().parents[2] / "data" / "refs"
-                                ref_file = REF_DIR / f"{ref_id}.json"
-                                if ref_file.exists():
-                                    ref_json = _json.loads(ref_file.read_text(encoding="utf-8"))
+                                rf = REF_DIR / f"{ref_id}.json"
+                                if rf.exists():
+                                    ref_json = json.loads(rf.read_text(encoding="utf-8"))
                             except Exception:
-                                ref_json = None
-                                print(f"⚠️⚠️⚠️路径参考图描述json路径不存在：{ref_json}")
+                                pass
 
-                            # 基于本轮目标 + 参考图META + 时间线，生成结构化编辑计划
-                            tl = get_slice()
-                            plan = plan_img2img_edit(target_text=target, ref_meta=ref_json, timeline=tl)
-
-                            # 生成强化的一致性编辑提示词
+                            plan = plan_img2img_edit(
+                                target_text=target, ref_meta=ref_json, timeline=tl
+                            )
                             pos, neg = build_img2img_edit_prompt(plan)
 
-                            # 6) 触发 img2img，完成后落库由 _watch_and_publish_task 负责
                             task_id = await run_image_task("img2img", pos, neg, "auto", None, ref_image_id, None)
                             await hub.publish(session_id, {"type":"image_task_queued", "task_id": task_id})
                             asyncio.create_task(_watch_and_publish_task(session_id, task_id))
-
                 else:
-                    # 纯场景/非女儿/非卧室 → 文生图
+                    # text2img
                     pos, neg = build_text2img_prompt({
                         "who":"场景元素或路人","where":"与对话相关地点",
                         "action":"关键行为","props":"相关道具",
@@ -278,18 +306,6 @@ async def handle_user_message(session_id: str, user_text: Optional[str]):
                     task_id = await run_image_task("text2img", pos, neg, "auto", None, None, None)
                     await hub.publish(session_id, {"type":"image_task_queued", "task_id": task_id})
                     asyncio.create_task(_watch_and_publish_task(session_id, task_id))
-
-            except Exception as e:
-                # 失败安全回退：避免影响对话体验
-                try:
-                    pos2, neg2 = build_text2img_prompt({
-                        "who":"场景元素或女孩","where":"与对话相关地点",
-                        "action":"关键行为","props":"相关道具",
-                        "lighting":"自然/暖光","framing":"中景","style":"写实"
-                    })
-                    task_id = await run_image_task("text2img", pos2, neg2, "auto", None, None, None)
-                    await hub.publish(session_id, {"type":"image_task_queued", "task_id": task_id})
-                    asyncio.create_task(_watch_and_publish_task(session_id, task_id))
-                except Exception:
-                    # 最终忽略（不打断主对话）
-                    pass
+            except Exception:
+                # 安全回退：不打断主对话
+                pass

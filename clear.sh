@@ -4,3 +4,4 @@ rm -rf data/sessions/*
 rm data/images/uploads/*
 rm data/images/generated/*
 rm data/image_meta/*
+rm data/refs_map.json

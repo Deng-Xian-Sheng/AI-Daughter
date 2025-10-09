@@ -24,8 +24,8 @@
         }
     },
     "image_transport": {
-        "modelscope": "data_uri",
-        "public_base_url": "http://127.0.0.1:8000",
+        "modelscope": "public_url",
+        "public_base_url": "https://www.u90934.nyat.app:20684",
         "static_path_prefix": "/static/images"
     },
     "limits": {

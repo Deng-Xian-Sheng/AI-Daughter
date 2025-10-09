@@ -107,11 +107,15 @@ cd aife-daughter-frontend
 npm install
 ```
 
+2.1 公网IP or 内网穿透（仅魔塔社区需要）
+
+**见下文“公网IP or 内网穿透（仅魔塔社区需要）”部分**
+
 3. 启动服务
 ```bash
 # 启动后端服务
 cd app
-MODELSCOPE_API_KEY="you key by 魔塔社区"  DASHSCOPE_API_KEY="you key 这个不是必填，除非你使用百炼大模型平台" uvicorn app.main:app --reload
+MODELSCOPE_API_KEY="you key by 魔塔社区"  DASHSCOPE_API_KEY="you key 这个不是必填，除非你使用百炼大模型平台" uvicorn app.main:app --reload --host 0.0.0.0
 
 # 启动前端服务（新终端）
 cd aife-daughter-frontend
@@ -157,6 +161,98 @@ npm run dev
 以及免费提供LLM、VLM、文生图、以图生图API的**魔塔社区**，太感谢了，没有它就没有这个项目！
 
 还有提供思路和允许我唠叨的哪些人，三人行必有我师🎉
+
+## 公网IP or 内网穿透（仅魔塔社区需要）
+
+### 关于魔塔社区和百炼大模型的收费与规则
+
+如果你使用魔塔社区，它是免费的，只不过在白天用的人多，生成图片时需要排队，晚上很快。
+
+而百炼大模型平台是收费的，虽然新用户有100次调用机会（具体要查阅文档），用完100次机会它会自动按量计费！但是API速度快。
+
+百炼大模型在以图生图的时候，图片可以以base64的形式传给API，而魔塔社区只能用公网可访问的URL。
+
+
+### 关于魔塔社区以图生图参考图所需的公网可访问URL
+
+魔塔社区只能用公网可访问的URL
+
+那么，就有n种选择：
+
+- 要么公网IP，也就是你在服务器上部署。
+- 要么内网穿透，这样就可以在家里电脑上用了。
+- 要么OSS，我目前的代码没支持OSS，你得看看怎么支持，倒是不难，但OSS是收费的。
+
+目前的代码，无论是内网穿透，还是公网IP，都能兼容。
+
+你只需要修改`settings.json`中的`image_transport.modelscope`和`image_transport.public_base_url`。
+
+这是我的配置，但你只能做参考：
+
+```
+    "image_transport": {
+        "modelscope": "public_url",
+        "public_base_url": "https://www.u90934.nyat.app:20684",
+        "static_path_prefix": "/static/images"
+    },
+```
+
+其中，`modelscope` 为 `public_url`这就是使用公网IP或者内网穿透，此时你需要配置`public_base_url`。（**注意末尾不要带`/`**）
+
+> **提示**
+> 使用百炼大模型平台的时候，它使用base64上传，无需配置`image_transport`这玩意
+
+对于`public_url`是什么的问题，根据我的配置你可以看到，它是一个http的域名，也可以是一个http的IP。
+
+### 对于具有公网IP的服务器
+
+如果你有具有公网IP的服务器，这里你可以填你服务器的IP，或者解析到服务器IP的域名，记得在你的服务器上运行这个项目，当通过你的域名或者IP能访问到这个项目时，就成了。
+
+你可能会得到一个：
+```
+{"detail":"Not Found"}
+```
+
+这是来自FastAPI的回复，这就对了。
+
+### 对于内网穿透（推荐）
+
+以上这些，特别是关于域名和服务器的，部署过的人自然懂，我稍微一提，不过度展开。没部署过的人也可以尝试，会有困难，但是不至于难以克服。
+
+除了使用具有公网IP的服务器，还可以使用内网穿透，我使用的是https://www.natfrp.com，这个内网穿透服务完全免费。
+
+大概的操作是：
+
+- 注册或者登录https://www.natfrp.com
+- 实名认证
+- 创建一个隧道
+  + 对于节点的地理位置，选择离你最近的
+  + **不需要**带有“绿色建站标识”的，带不带都行，完全没影响
+  + 选定节点之后，隧道类型选择TCP隧道
+  + 隧道名随便输入，本地端口设置为8000，这是AI女儿后端服务的http端口，默认是8000
+  + 自动HTTPS，选择：自动
+  + 点击创建按钮创建就行了
+  + 创建完成之后，在https://www.natfrp.com页面的顶部“服务”一栏，鼠标悬浮上去，会看到“子域绑定”，点击它！（URL是https://www.natfrp.com/tunnel/domain）
+  + 随便选择一个子域，点击创建就行了
+  + 创建完成之后，点击“隧道子域名”列表右侧的“新建绑定”按钮
+  + 随便选择第一段前缀（比如www，都一样），没必要选择第二段前缀了
+  + 点击“绑定隧道”列表，选择你的隧道，这就是刚刚创建的隧道
+  + 等1分钟不到，刷新这个页面（https://www.natfrp.com/tunnel/domain）你就会看到“SSL 证书已签发”
+  + 然后在“隧道子域名”列表中找到刚刚绑定的子域名，复制`https://`链接。将它粘贴到项目代码的`settings.json`文件中的`image_transport.public_base_url`字段对应的值中。（**注意末尾不要带`/`**）
+  + 此时，隧道创建和`settings.json`的`image_transport.public_base_url`配置部分就完成了。
+- 现在需要在电脑上启动frp服务，也就是内网穿透服务
+- 打开https://www.natfrp.com/tunnel/download，下载你系统支持的frp软件（客户端）
+- 然后回到https://www.natfrp.com/tunnel/，也就是隧道列表部分
+- 在“隧道列表”这个列表中，找到之前创建的隧道，在“操作”那一栏点击第一个图标（鼠标悬浮在第一个图标上的时候它应该会显示几个字：“配置文件”）
+- 然后选择你的frp客户端版本
+- 然后点击“复制配置”
+- 然后将配置粘贴到你的电脑上，frp客户端的配置文件中
+- 重启frp客户端，此时，frp服务就在你的电脑上启动成功了
+- 需要注意的是，如果你未来需要改变`https://www.natfrp.com`上的隧道配置，那么，你需要重新将配置文件粘贴到本地客户端
+
+经过这些操作，内网穿透隧道就在`https://www.natfrp.com`平台上配置好了，并且你的本地电脑也启动了内网穿透的客户端服务，并且AI女儿的`settings.json`文件中的`image_transport.public_base_url`字段也配置好了。
+
+下一步可以尝试启动AI女儿了，请回到自述文件的`## 快速开始`部分。
 
 ## 开发进度
 
